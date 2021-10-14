@@ -124,6 +124,9 @@ namespace Mistaken.BetterDoors
 
         private void Server_WaitingForPlayers()
         {
+            CheckpointDoors.Clear();
+            AirlockDoors.Clear();
+
             foreach (var doorType in PluginHandler.Instance.Config.CheckpointDoors)
                 CheckpointDoors.Add(Map.Doors.First(x => x.Type == doorType.Key), doorType.Value);
             foreach (var doorType in PluginHandler.Instance.Config.AirlockDoors)
