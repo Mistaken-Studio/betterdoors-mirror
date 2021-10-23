@@ -4,15 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
+using Mirror;
 using Mistaken.API.Diagnostics;
 using UnityEngine;
 
@@ -76,6 +74,16 @@ namespace Mistaken.BetterDoors
                         subDamageableDoor._remainingHealth = subDamageableDoor._maxHealth;
                         this.Log.Debug($"Done setting sub doors", PluginHandler.Instance.Config.VerbouseOutput);
                     }
+                }
+            }
+
+            foreach (var door in Map.Doors)
+            {
+                foreach (var collider in door.Base.gameObject.GetComponentsInChildren<RegularDoorButton>())
+                {
+                    this.Log.Debug($"{collider.name}", true);
+                    var script = collider.gameObject.AddComponent<ButtonTargetScript>();
+                    script.Door = door.Base;
                 }
             }
 

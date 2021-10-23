@@ -7,6 +7,7 @@
 using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using HarmonyLib;
 
 namespace Mistaken.BetterDoors
 {
@@ -32,6 +33,8 @@ namespace Mistaken.BetterDoors
         public override void OnEnabled()
         {
             Instance = this;
+            harmony = new Harmony("mistaken.betterdoors");
+            harmony.PatchAll();
 
             new DoorHandler(this);
 
@@ -43,11 +46,15 @@ namespace Mistaken.BetterDoors
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            harmony.UnpatchAll();
+
             API.Diagnostics.Module.OnDisable(this);
 
             base.OnDisabled();
         }
 
         internal static PluginHandler Instance { get; private set; }
+
+        private static Harmony harmony;
     }
 }

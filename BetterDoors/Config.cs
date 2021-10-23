@@ -24,6 +24,12 @@ namespace Mistaken.BetterDoors
         [Description("If true then debug will be displayed")]
         public bool VerbouseOutput { get; set; }
 
+        /// <summary>
+        /// Gets or sets change of door toggling when it's button is shot.
+        /// </summary>
+        [Description("Chance of door toggling when it's button is shot")]
+        public float Chance { get; set; } = 10f;
+
         public Dictionary<DoorType, bool> GrenadeResistantDoors { get; set; } = new Dictionary<DoorType, bool>()
         {
             { DoorType.HID, true },
