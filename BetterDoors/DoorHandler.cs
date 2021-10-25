@@ -77,16 +77,6 @@ namespace Mistaken.BetterDoors
                 }
             }
 
-            foreach (var door in Map.Doors)
-            {
-                foreach (var collider in door.Base.gameObject.GetComponentsInChildren<RegularDoorButton>())
-                {
-                    this.Log.Debug($"{collider.name}", true);
-                    var script = collider.gameObject.AddComponent<ButtonTargetScript>();
-                    script.Door = door.Base;
-                }
-            }
-
             this.RunCoroutine(this.DoRoundLoop(), "RoundLoop");
         }
 

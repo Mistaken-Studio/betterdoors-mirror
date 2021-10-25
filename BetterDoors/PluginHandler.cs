@@ -8,6 +8,7 @@ using System;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using HarmonyLib;
+using InventorySystem;
 
 namespace Mistaken.BetterDoors
 {
@@ -35,6 +36,7 @@ namespace Mistaken.BetterDoors
             Instance = this;
             harmony = new Harmony("mistaken.betterdoors");
             harmony.PatchAll();
+            InventoryItemLoader.ForceReload();
 
             new DoorHandler(this);
 
