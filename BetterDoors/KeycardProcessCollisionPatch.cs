@@ -50,12 +50,19 @@ namespace Mistaken.BetterDoors
 
         private static void Run(KeycardPickup instance, RegularDoorButton regularDoorButton)
         {
+            DateTime start = DateTime.UtcNow;
             DoorVariant doorVariant;
             if ((doorVariant = regularDoorButton.Target as DoorVariant) == null)
+            {
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.KeycardProcessCollisionPatch", "OnCollisionEnter", start, DateTime.UtcNow);
                 return;
+            }
 
             if (!InventoryItemLoader.AvailableItems.TryGetValue(instance.Info.ItemId, out ItemBase item))
+            {
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.KeycardProcessCollisionPatch", "OnCollisionEnter", start, DateTime.UtcNow);
                 return;
+            }
 
             if (doorVariant.AllowInteracting(null, regularDoorButton.ColliderId))
             {
@@ -67,6 +74,8 @@ namespace Mistaken.BetterDoors
                 else
                     ev.Door.Base.PermissionsDenied(null, regularDoorButton.ColliderId);
             }
+
+            API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.KeycardProcessCollisionPatch", "OnCollisionEnter", start, DateTime.UtcNow);
         }
     }
 }

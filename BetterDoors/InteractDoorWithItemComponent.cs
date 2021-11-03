@@ -29,15 +29,25 @@ namespace Mistaken.BetterDoors
 
         private void OnCollisionEnter(Collision collision)
         {
+            DateTime start = DateTime.UtcNow;
             if (!collision.collider.TryGetComponent<RegularDoorButton>(out RegularDoorButton regularDoorButton))
+            {
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
                 return;
+            }
 
             DoorVariant doorVariant;
             if ((doorVariant = (DoorVariant)regularDoorButton.Target) is null)
+            {
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
                 return;
+            }
 
             if (doorVariant.RequiredPermissions.RequiredPermissions != KeycardPermissions.None)
+            {
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
                 return;
+            }
 
             var owner = this.item.PreviousOwner.Hub;
 
@@ -50,6 +60,8 @@ namespace Mistaken.BetterDoors
                 else
                     ev.Door.Base.PermissionsDenied(owner, regularDoorButton.ColliderId);
             }
+
+            API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
         }
     }
 }

@@ -34,17 +34,17 @@ namespace Mistaken.BetterDoors
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => this.Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => this.Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
+            Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
         }
 
         /// <inheritdoc/>
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => this.Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => this.Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => this.Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
         }
 
         private void Server_RoundStarted()
