@@ -32,20 +32,20 @@ namespace Mistaken.BetterDoors
             DateTime start = DateTime.UtcNow;
             if (!collision.collider.TryGetComponent<RegularDoorButton>(out RegularDoorButton regularDoorButton))
             {
-                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter__1", start, DateTime.UtcNow);
                 return;
             }
 
             DoorVariant doorVariant;
             if ((doorVariant = (DoorVariant)regularDoorButton.Target) is null)
             {
-                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter__2", start, DateTime.UtcNow);
                 return;
             }
 
             if (doorVariant.RequiredPermissions.RequiredPermissions != KeycardPermissions.None)
             {
-                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
+                API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter__3", start, DateTime.UtcNow);
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace Mistaken.BetterDoors
                     ev.Door.Base.PermissionsDenied(owner, regularDoorButton.ColliderId);
             }
 
-            API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter", start, DateTime.UtcNow);
+            API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter__0", start, DateTime.UtcNow);
         }
     }
 }
