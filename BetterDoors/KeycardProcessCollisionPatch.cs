@@ -71,7 +71,7 @@ namespace Mistaken.BetterDoors
                 var ev = new InteractingDoorEventArgs(player, doorVariant, doorVariant.ActiveLocks == 0 && doorVariant.RequiredPermissions.CheckPermissions(item, null));
                 player.SetSessionVariable(API.SessionVarType.THROWN_ITEM, instance);
                 Exiled.Events.Handlers.Player.OnInteractingDoor(ev);
-                player.RemoveSessionVariable(API.SessionVarType.THROWN_ITEM);
+                MEC.Timing.CallDelayed(1, () => player.RemoveSessionVariable(API.SessionVarType.THROWN_ITEM));
 
                 if (ev.IsAllowed)
                     ev.Door.IsOpen = !ev.Door.IsOpen;
