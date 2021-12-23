@@ -14,6 +14,7 @@ using Interactables.Interobjects.DoorUtils;
 using InventorySystem;
 using InventorySystem.Items;
 using InventorySystem.Items.Pickups;
+using Mistaken.API.Extensions;
 using UnityEngine;
 
 namespace Mistaken.BetterDoors
@@ -53,7 +54,10 @@ namespace Mistaken.BetterDoors
 
             if (doorVariant.AllowInteracting(owner, regularDoorButton.ColliderId))
             {
-                var ev = new Exiled.Events.EventArgs.InteractingDoorEventArgs(Player.Get(owner), doorVariant, doorVariant.ActiveLocks == 0);
+                var player = Player.Get(owner);
+                player.SetSessionVariable(API.SessionVarType.THROWN_ITEM, this.item);
+                var ev = new Exiled.Events.EventArgs.InteractingDoorEventArgs(player, doorVariant, doorVariant.ActiveLocks == 0);
+                player.RemoveSessionVariable(API.SessionVarType.THROWN_ITEM);
                 Exiled.Events.Handlers.Player.OnInteractingDoor(ev);
                 if (ev.IsAllowed)
                     ev.Door.IsOpen = !ev.Door.IsOpen;
