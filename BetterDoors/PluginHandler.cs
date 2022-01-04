@@ -28,7 +28,7 @@ namespace Mistaken.BetterDoors
         public override PluginPriority Priority => PluginPriority.Default;
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(3, 1, 1);
+        public override Version RequiredExiledVersion => new Version(4, 2, 2);
 
         /// <inheritdoc/>
         public override void OnEnabled()
