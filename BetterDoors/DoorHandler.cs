@@ -77,23 +77,19 @@ namespace Mistaken.BetterDoors
                 }
             }
 
-            this.RunCoroutine(this.DoRoundLoop(), "RoundLoop");
+            this.CreateRoundLoop(this.DoRoundLoop);
         }
 
         private IEnumerator<float> DoRoundLoop()
         {
             yield return Timing.WaitForSeconds(1);
-            while (Round.IsStarted)
+            foreach (var door in CheckpointDoors)
             {
-                yield return Timing.WaitForSeconds(1);
-                foreach (var door in CheckpointDoors)
-                {
-                    if (door.Key.IsLocked)
-                        continue;
-                    if (!door.Key.IsOpen)
-                        continue;
-                    door.Key.IsOpen = false;
-                }
+                if (door.Key.IsLocked)
+                    continue;
+                if (!door.Key.IsOpen)
+                    continue;
+                door.Key.IsOpen = false;
             }
         }
 
