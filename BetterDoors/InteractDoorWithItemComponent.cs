@@ -54,15 +54,20 @@ namespace Mistaken.BetterDoors
 
             if (doorVariant.AllowInteracting(owner, regularDoorButton.ColliderId))
             {
+                // Item can't self open door without owner.
                 var player = Player.Get(owner);
-                player.SetSessionVariable(API.SessionVarType.THROWN_ITEM, this.item);
-                var ev = new Exiled.Events.EventArgs.InteractingDoorEventArgs(player, doorVariant, doorVariant.ActiveLocks == 0);
-                player.RemoveSessionVariable(API.SessionVarType.THROWN_ITEM);
-                Exiled.Events.Handlers.Player.OnInteractingDoor(ev);
-                if (ev.IsAllowed)
-                    ev.Door.IsOpen = !ev.Door.IsOpen;
-                else
-                    ev.Door.Base.PermissionsDenied(owner, regularDoorButton.ColliderId);
+                if (!(player is null))
+                {
+                    player.SetSessionVariable(API.SessionVarType.THROWN_ITEM, this.item);
+                    var ev = new Exiled.Events.EventArgs.InteractingDoorEventArgs(player, doorVariant, doorVariant.ActiveLocks == 0);
+                    player.RemoveSessionVariable(API.SessionVarType.THROWN_ITEM);
+                    Exiled.Events.Handlers.Player.OnInteractingDoor(ev);
+
+                    if (ev.IsAllowed)
+                        ev.Door.IsOpen = !ev.Door.IsOpen;
+                    else
+                        ev.Door.Base.PermissionsDenied(owner, regularDoorButton.ColliderId);
+                }
             }
 
             API.Diagnostics.MasterHandler.LogTime("Mistaken.BetterDoors.InteractDoorWithItemComponent", "OnCollisionEnter__0", start, DateTime.UtcNow);
