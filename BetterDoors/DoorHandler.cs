@@ -85,11 +85,18 @@ namespace Mistaken.BetterDoors
             yield return Timing.WaitForSeconds(1);
             foreach (var door in CheckpointDoors)
             {
-                if (door.Key.IsLocked)
-                    continue;
-                if (!door.Key.IsOpen)
-                    continue;
-                door.Key.IsOpen = false;
+                try
+                {
+                    if (door.Key.IsLocked)
+                        continue;
+                    if (!door.Key.IsOpen)
+                        continue;
+                    door.Key.IsOpen = false;
+                }
+                catch (System.Exception ex)
+                {
+                    this.Log.Error(ex);
+                }
             }
         }
 
