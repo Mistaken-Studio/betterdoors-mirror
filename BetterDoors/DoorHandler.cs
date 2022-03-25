@@ -51,7 +51,7 @@ namespace Mistaken.BetterDoors
         {
             foreach (var item in PluginHandler.Instance.Config.CustomDoorHealth)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 this.Log.Debug($"Setting custom health for {door.Type}, heath: {item.Value}", PluginHandler.Instance.Config.VerbouseOutput);
 
@@ -129,18 +129,18 @@ namespace Mistaken.BetterDoors
             AirlockDoors.Clear();
 
             foreach (var doorType in PluginHandler.Instance.Config.CheckpointDoors)
-                CheckpointDoors.Add(Map.Doors.First(x => x.Type == doorType.Key), doorType.Value);
+                CheckpointDoors.Add(Door.List.First(x => x.Type == doorType.Key), doorType.Value);
             foreach (var doorType in PluginHandler.Instance.Config.AirlockDoors)
             {
-                var d1 = Map.Doors.First(x => x.Type == doorType.Key);
-                var d2 = Map.Doors.First(x => x.Type == doorType.Value);
+                var d1 = Door.List.First(x => x.Type == doorType.Key);
+                var d2 = Door.List.First(x => x.Type == doorType.Value);
                 AirlockDoors.Add(d1, d2);
                 AirlockDoors.Add(d2, d1);
             }
 
             foreach (var item in PluginHandler.Instance.Config.GrenadeResistantDoors)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 if (item.Value)
                     door.IgnoredDamageTypes |= DoorDamageType.Grenade;
@@ -163,7 +163,7 @@ namespace Mistaken.BetterDoors
 
             foreach (var item in PluginHandler.Instance.Config.SCP096ResistantDoors)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 if (item.Value)
                     door.IgnoredDamageTypes |= DoorDamageType.Scp096;
