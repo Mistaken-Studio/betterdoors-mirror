@@ -10,9 +10,7 @@ using Exiled.API.Features;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
-using Mirror;
 using Mistaken.API.Diagnostics;
-using UnityEngine;
 
 namespace Mistaken.BetterDoors
 {
@@ -34,17 +32,17 @@ namespace Mistaken.BetterDoors
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
             Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
+            Events.Handlers.CustomEvents.GeneratedCache += this.CustomEvents_GeneratedCache;
         }
 
         /// <inheritdoc/>
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
+            Events.Handlers.CustomEvents.GeneratedCache -= this.CustomEvents_GeneratedCache;
         }
 
         private void Server_RoundStarted()
@@ -123,7 +121,7 @@ namespace Mistaken.BetterDoors
             }
         }
 
-        private void Server_WaitingForPlayers()
+        private void CustomEvents_GeneratedCache()
         {
             CheckpointDoors.Clear();
             AirlockDoors.Clear();
