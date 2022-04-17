@@ -34,7 +34,7 @@ namespace Mistaken.BetterDoors
         {
             Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
-            Events.Handlers.CustomEvents.GeneratedCache += this.CustomEvents_GeneratedCache;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
         }
 
         /// <inheritdoc/>
@@ -42,7 +42,7 @@ namespace Mistaken.BetterDoors
         {
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
-            Events.Handlers.CustomEvents.GeneratedCache -= this.CustomEvents_GeneratedCache;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
         }
 
         private void Server_RoundStarted()
@@ -83,6 +83,8 @@ namespace Mistaken.BetterDoors
             yield return Timing.WaitForSeconds(1);
             foreach (var door in CheckpointDoors)
             {
+                if (door.Key.Base == null)
+                    continue;
                 try
                 {
                     if (door.Key.IsLocked)
@@ -121,7 +123,7 @@ namespace Mistaken.BetterDoors
             }
         }
 
-        private void CustomEvents_GeneratedCache()
+        private void Server_WaitingForPlayers()
         {
             CheckpointDoors.Clear();
             AirlockDoors.Clear();
