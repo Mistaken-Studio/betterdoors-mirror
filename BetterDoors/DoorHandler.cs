@@ -10,9 +10,7 @@ using Exiled.API.Features;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
-using Mirror;
 using Mistaken.API.Diagnostics;
-using UnityEngine;
 
 namespace Mistaken.BetterDoors
 {
@@ -34,24 +32,24 @@ namespace Mistaken.BetterDoors
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
             Exiled.Events.Handlers.Player.InteractingDoor += this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted += this.Server_RoundStarted;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Server_WaitingForPlayers;
         }
 
         /// <inheritdoc/>
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Player_InteractingDoor;
             Exiled.Events.Handlers.Server.RoundStarted -= this.Server_RoundStarted;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Server_WaitingForPlayers;
         }
 
         private void Server_RoundStarted()
         {
             foreach (var item in PluginHandler.Instance.Config.CustomDoorHealth)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 this.Log.Debug($"Setting custom health for {door.Type}, heath: {item.Value}", PluginHandler.Instance.Config.VerbouseOutput);
 
@@ -85,6 +83,8 @@ namespace Mistaken.BetterDoors
             yield return Timing.WaitForSeconds(1);
             foreach (var door in CheckpointDoors)
             {
+                if (door.Key.Base == null)
+                    continue;
                 try
                 {
                     if (door.Key.IsLocked)
@@ -129,18 +129,18 @@ namespace Mistaken.BetterDoors
             AirlockDoors.Clear();
 
             foreach (var doorType in PluginHandler.Instance.Config.CheckpointDoors)
-                CheckpointDoors.Add(Map.Doors.First(x => x.Type == doorType.Key), doorType.Value);
+                CheckpointDoors.Add(Door.List.First(x => x.Type == doorType.Key), doorType.Value);
             foreach (var doorType in PluginHandler.Instance.Config.AirlockDoors)
             {
-                var d1 = Map.Doors.First(x => x.Type == doorType.Key);
-                var d2 = Map.Doors.First(x => x.Type == doorType.Value);
+                var d1 = Door.List.First(x => x.Type == doorType.Key);
+                var d2 = Door.List.First(x => x.Type == doorType.Value);
                 AirlockDoors.Add(d1, d2);
                 AirlockDoors.Add(d2, d1);
             }
 
             foreach (var item in PluginHandler.Instance.Config.GrenadeResistantDoors)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 if (item.Value)
                     door.IgnoredDamageTypes |= DoorDamageType.Grenade;
@@ -163,7 +163,7 @@ namespace Mistaken.BetterDoors
 
             foreach (var item in PluginHandler.Instance.Config.SCP096ResistantDoors)
             {
-                var door = Map.Doors.First(x => x.Type == item.Key);
+                var door = Door.List.First(x => x.Type == item.Key);
 
                 if (item.Value)
                     door.IgnoredDamageTypes |= DoorDamageType.Scp096;
