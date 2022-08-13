@@ -128,58 +128,71 @@ namespace Mistaken.BetterDoors
             CheckpointDoors.Clear();
             AirlockDoors.Clear();
 
-            foreach (var doorType in PluginHandler.Instance.Config.CheckpointDoors)
-                CheckpointDoors.Add(Door.List.First(x => x.Type == doorType.Key), doorType.Value);
-            foreach (var doorType in PluginHandler.Instance.Config.AirlockDoors)
+            if (PluginHandler.Instance.Config.CheckpointDoors != null)
             {
-                var d1 = Door.List.First(x => x.Type == doorType.Key);
-                var d2 = Door.List.First(x => x.Type == doorType.Value);
-                AirlockDoors.Add(d1, d2);
-                AirlockDoors.Add(d2, d1);
+                foreach (var doorType in PluginHandler.Instance.Config.CheckpointDoors)
+                    CheckpointDoors.Add(Door.List.First(x => x.Type == doorType.Key), doorType.Value);
             }
 
-            foreach (var item in PluginHandler.Instance.Config.GrenadeResistantDoors)
+            if (PluginHandler.Instance.Config.AirlockDoors != null)
             {
-                var door = Door.List.First(x => x.Type == item.Key);
-
-                if (item.Value)
-                    door.IgnoredDamageTypes |= DoorDamageType.Grenade;
-                else
-                    door.IgnoredDamageTypes &= ~DoorDamageType.Grenade;
-
-                if (door.Base is CheckpointDoor checkpoint)
+                foreach (var doorType in PluginHandler.Instance.Config.AirlockDoors)
                 {
-                    foreach (var subDoor in checkpoint._subDoors)
+                    var d1 = Door.List.First(x => x.Type == doorType.Key);
+                    var d2 = Door.List.First(x => x.Type == doorType.Value);
+                    AirlockDoors.Add(d1, d2);
+                    AirlockDoors.Add(d2, d1);
+                }
+            }
+
+            if (PluginHandler.Instance.Config.GrenadeResistantDoors != null)
+            {
+                foreach (var item in PluginHandler.Instance.Config.GrenadeResistantDoors)
+                {
+                    var door = Door.List.First(x => x.Type == item.Key);
+
+                    if (item.Value)
+                        door.IgnoredDamageTypes |= DoorDamageType.Grenade;
+                    else
+                        door.IgnoredDamageTypes &= ~DoorDamageType.Grenade;
+
+                    if (door.Base is CheckpointDoor checkpoint)
                     {
-                        if (!(subDoor is BreakableDoor damageableDoor))
-                            continue;
-                        if (item.Value)
-                            damageableDoor._ignoredDamageSources |= DoorDamageType.Grenade;
-                        else
-                            damageableDoor._ignoredDamageSources &= ~DoorDamageType.Grenade;
+                        foreach (var subDoor in checkpoint._subDoors)
+                        {
+                            if (!(subDoor is BreakableDoor damageableDoor))
+                                continue;
+                            if (item.Value)
+                                damageableDoor._ignoredDamageSources |= DoorDamageType.Grenade;
+                            else
+                                damageableDoor._ignoredDamageSources &= ~DoorDamageType.Grenade;
+                        }
                     }
                 }
             }
 
-            foreach (var item in PluginHandler.Instance.Config.SCP096ResistantDoors)
+            if (PluginHandler.Instance.Config.SCP096ResistantDoors != null)
             {
-                var door = Door.List.First(x => x.Type == item.Key);
-
-                if (item.Value)
-                    door.IgnoredDamageTypes |= DoorDamageType.Scp096;
-                else
-                    door.IgnoredDamageTypes &= ~DoorDamageType.Scp096;
-
-                if (door.Base is CheckpointDoor checkpoint)
+                foreach (var item in PluginHandler.Instance.Config.SCP096ResistantDoors)
                 {
-                    foreach (var subDoor in checkpoint._subDoors)
+                    var door = Door.List.First(x => x.Type == item.Key);
+
+                    if (item.Value)
+                        door.IgnoredDamageTypes |= DoorDamageType.Scp096;
+                    else
+                        door.IgnoredDamageTypes &= ~DoorDamageType.Scp096;
+
+                    if (door.Base is CheckpointDoor checkpoint)
                     {
-                        if (!(subDoor is BreakableDoor damageableDoor))
-                            continue;
-                        if (item.Value)
-                            damageableDoor._ignoredDamageSources |= DoorDamageType.Scp096;
-                        else
-                            damageableDoor._ignoredDamageSources &= ~DoorDamageType.Scp096;
+                        foreach (var subDoor in checkpoint._subDoors)
+                        {
+                            if (!(subDoor is BreakableDoor damageableDoor))
+                                continue;
+                            if (item.Value)
+                                damageableDoor._ignoredDamageSources |= DoorDamageType.Scp096;
+                            else
+                                damageableDoor._ignoredDamageSources &= ~DoorDamageType.Scp096;
+                        }
                     }
                 }
             }
