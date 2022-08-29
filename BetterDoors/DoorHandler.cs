@@ -47,30 +47,33 @@ namespace Mistaken.BetterDoors
 
         private void Server_RoundStarted()
         {
-            foreach (var item in PluginHandler.Instance.Config.CustomDoorHealth)
+            if (PluginHandler.Instance.Config.CustomDoorHealth != null)
             {
-                var door = Door.List.First(x => x.Type == item.Key);
-
-                this.Log.Debug($"Setting custom health for {door.Type}, heath: {item.Value}", PluginHandler.Instance.Config.VerbouseOutput);
-
-                if (door.Base is BreakableDoor damageableDoor)
+                foreach (var item in PluginHandler.Instance.Config.CustomDoorHealth)
                 {
-                    damageableDoor._maxHealth = item.Value;
-                    damageableDoor._remainingHealth = damageableDoor._maxHealth;
-                    this.Log.Debug($"Done setting door", PluginHandler.Instance.Config.VerbouseOutput);
-                }
+                    var door = Door.List.First(x => x.Type == item.Key);
 
-                if (door.Base is CheckpointDoor checkpoint)
-                {
-                    this.Log.Debug($"Checkpont", PluginHandler.Instance.Config.VerbouseOutput);
-                    foreach (var subDoor in checkpoint._subDoors)
+                    this.Log.Debug($"Setting custom health for {door.Type}, heath: {item.Value}", PluginHandler.Instance.Config.VerbouseOutput);
+
+                    if (door.Base is BreakableDoor damageableDoor)
                     {
-                        this.Log.Debug($"Setting sub doors", PluginHandler.Instance.Config.VerbouseOutput);
-                        if (!(subDoor is BreakableDoor subDamageableDoor))
-                            continue;
-                        subDamageableDoor._maxHealth = item.Value;
-                        subDamageableDoor._remainingHealth = subDamageableDoor._maxHealth;
-                        this.Log.Debug($"Done setting sub doors", PluginHandler.Instance.Config.VerbouseOutput);
+                        damageableDoor._maxHealth = item.Value;
+                        damageableDoor._remainingHealth = damageableDoor._maxHealth;
+                        this.Log.Debug($"Done setting door", PluginHandler.Instance.Config.VerbouseOutput);
+                    }
+
+                    if (door.Base is CheckpointDoor checkpoint)
+                    {
+                        this.Log.Debug($"Checkpont", PluginHandler.Instance.Config.VerbouseOutput);
+                        foreach (var subDoor in checkpoint._subDoors)
+                        {
+                            this.Log.Debug($"Setting sub doors", PluginHandler.Instance.Config.VerbouseOutput);
+                            if (!(subDoor is BreakableDoor subDamageableDoor))
+                                continue;
+                            subDamageableDoor._maxHealth = item.Value;
+                            subDamageableDoor._remainingHealth = subDamageableDoor._maxHealth;
+                            this.Log.Debug($"Done setting sub doors", PluginHandler.Instance.Config.VerbouseOutput);
+                        }
                     }
                 }
             }
